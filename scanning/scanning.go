@@ -1,10 +1,8 @@
 package scanning
 
 import (
-	"fmt"
 	"image"
 	"image/color"
-	"image/png"
 	_ "image/png"
 	"os"
 )
