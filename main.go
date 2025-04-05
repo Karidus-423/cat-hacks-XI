@@ -1,23 +1,23 @@
 package main
 
 import (
-	"apothecary-journal/scanning"
+	"apothecary-journal/data"
 	"apothecary-journal/user"
-	"fmt"
+	"log"
+
 	tea "github.com/charmbracelet/bubbletea"
-	"os"
 )
 
 func main() {
-	_, format, err := scanning.DecodeImage("./images/training/abutilon.png")
-	if err != nil {
-		fmt.Println("DecodeImage Failed")
-		return
+	collection := &data.Collection{}
+	if err := collection.Init(); err != nil {
+		log.Fatalf("Unable to init collection: %v", err)
 	}
-	fmt.Printf("Decoded Image | Format: %s\n", format)
-	p := tea.NewProgram(user.InitialModel(), tea.WithAltScreen())
+	m := user.NewModel(collection)
+
+	p := tea.NewProgram(m)
+
 	if _, err := p.Run(); err != nil {
-		fmt.Printf("Alas, there's been an error: %v\n", err)
-		os.Exit(1)
+		log.Fatalf("Unable to run program due to %v", err)
 	}
 }
